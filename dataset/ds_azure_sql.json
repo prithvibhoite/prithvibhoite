@@ -1,0 +1,60 @@
+{
+	"name": "ds_azure_sql",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_azure_sql",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Chapter-03"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "RowId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Retailer",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SalesMonth",
+				"type": "date"
+			},
+			{
+				"name": "Product",
+				"type": "nvarchar"
+			},
+			{
+				"name": "ManufacturerProductCode",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SalesValueUSD",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 2
+			},
+			{
+				"name": "UnitsSold",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "PipelineRunId",
+				"type": "uniqueidentifier"
+			},
+			{
+				"name": "SourceFileName",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Sales_LOAD"
+		}
+	}
+}
