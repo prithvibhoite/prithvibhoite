@@ -8,6 +8,9 @@
 		"ls_azure_blob_storage_connectionString": {
 			"value": ""
 		},
+		"ls_azure_sql_connectionString": {
+			"value": ""
+		},
 		"containerUri": {
 			"value": ""
 		},
