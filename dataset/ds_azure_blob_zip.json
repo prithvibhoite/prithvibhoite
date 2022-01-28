@@ -1,0 +1,25 @@
+{
+	"name": "ds_azure_blob_zip",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_azure_blob_storage",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Chapter-02"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "00_azure-data-factory-by-example-main.zip",
+				"container": "landing"
+			},
+			"compression": {
+				"type": "ZipDeflate",
+				"level": "Optimal"
+			}
+		}
+	}
+}
