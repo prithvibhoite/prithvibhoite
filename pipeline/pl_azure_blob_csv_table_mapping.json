@@ -100,20 +100,6 @@
 									"type": "Int32",
 									"physicalType": "int"
 								}
-							},
-							{
-								"sink": {
-									"name": "PipelineRunId",
-									"type": "Guid",
-									"physicalType": "uniqueidentifier"
-								}
-							},
-							{
-								"sink": {
-									"name": "SourceFileName",
-									"type": "String",
-									"physicalType": "nvarchar"
-								}
 							}
 						],
 						"typeConversion": true,
