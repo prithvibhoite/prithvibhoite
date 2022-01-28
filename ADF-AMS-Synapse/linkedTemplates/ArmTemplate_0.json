@@ -365,6 +365,19 @@
 						"typeProperties": {
 							"source": {
 								"type": "DelimitedTextSource",
+								"additionalColumns": [
+									{
+										"name": "SourceFileName",
+										"value": "$$FILEPATH"
+									},
+									{
+										"name": "PipelineRunID",
+										"value": {
+											"value": "@pipeline().RunId",
+											"type": "Expression"
+										}
+									}
+								],
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
 									"recursive": true,
@@ -447,6 +460,28 @@
 											"name": "UnitsSold",
 											"type": "Int32",
 											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "PipelineRunID",
+											"type": "String"
+										},
+										"sink": {
+											"name": "PipelineRunId",
+											"type": "Guid",
+											"physicalType": "uniqueidentifier"
+										}
+									},
+									{
+										"source": {
+											"name": "SourceFileName",
+											"type": "String"
+										},
+										"sink": {
+											"name": "SourceFileName",
+											"type": "String",
+											"physicalType": "nvarchar"
 										}
 									}
 								],
