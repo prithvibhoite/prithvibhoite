@@ -33,7 +33,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "azure-data-factory-by-example-main/SampleData/SugarCube",
+							"wildcardFolderPath": "azure-data-factory-by-example-main/SampleData/HandyCandy",
 							"wildcardFileName": "*.json",
 							"enablePartitionDiscovery": false
 						},
@@ -42,11 +42,14 @@
 						}
 					},
 					"sink": {
-						"type": "AzureSqlSink",
-						"preCopyScript": "TRUNCATE TABLE dbo.Sales_LOAD",
-						"writeBehavior": "insert",
-						"sqlWriterUseTableLock": false,
-						"disableMetricsCollection": false
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings",
+							"copyBehavior": "MergeFiles"
+						},
+						"formatSettings": {
+							"type": "ParquetWriteSettings"
+						}
 					},
 					"enableStaging": false,
 					"translator": {
@@ -130,13 +133,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ds_azure_blob_json",
+						"referenceName": "ds_azure_blob_json_01",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "ds_azure_sql",
+						"referenceName": "ds_azure_blob_parquet",
 						"type": "DatasetReference"
 					}
 				]
