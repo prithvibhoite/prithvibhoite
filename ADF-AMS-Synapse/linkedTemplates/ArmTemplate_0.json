@@ -146,6 +146,64 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ds_azure_blob_json')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_azure_blob_storage",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Chapter-03"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "April.json",
+						"folderPath": "azure-data-factory-by-example-main/SampleData/SugarCube/2020/Q2",
+						"container": "sampledata"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"Month": {
+							"type": "string"
+						},
+						"Company": {
+							"type": "string"
+						},
+						"Sales": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"Product": {
+										"type": "string"
+									},
+									"ManufacturerProductCode": {
+										"type": "string"
+									},
+									"Units": {
+										"type": "integer"
+									},
+									"Value": {
+										"type": "number"
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_azure_blob_storage')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ds_azure_blob_unzip')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -519,6 +577,168 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ds_azure_blob_csv_mapping')]",
+				"[concat(variables('factoryId'), '/datasets/ds_azure_sql')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_azure_blob_json_table')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "cp_azure_blob_json_table",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"additionalColumns": [
+									{
+										"name": "SourceFileName",
+										"value": "$$FILEPATH"
+									},
+									{
+										"name": "PipelineRunID",
+										"value": {
+											"value": "@pipeline().RunId",
+											"type": "Expression"
+										}
+									}
+								],
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": "azure-data-factory-by-example-main/SampleData/SugarCube",
+									"wildcardFileName": "*.json",
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": "TRUNCATE TABLE dbo.Sales_LOAD",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['Month']"
+										},
+										"sink": {
+											"name": "SalesMonth",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Company']"
+										},
+										"sink": {
+											"name": "Retailer",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['Product']"
+										},
+										"sink": {
+											"name": "Product",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['ManufacturerProductCode']"
+										},
+										"sink": {
+											"name": "ManufacturerProductCode",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['Value']"
+										},
+										"sink": {
+											"name": "SalesValueUSD",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "[['Units']"
+										},
+										"sink": {
+											"name": "UnitsSold",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"path": "$['SourceFileName']"
+										},
+										"sink": {
+											"name": "SourceFileName",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['PipelineRunID']"
+										},
+										"sink": {
+											"name": "PipelineRunId",
+											"type": "Guid"
+										}
+									}
+								],
+								"collectionReference": "$['Sales']"
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_azure_blob_json",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_azure_sql",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Chapter-03"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_azure_blob_json')]",
 				"[concat(variables('factoryId'), '/datasets/ds_azure_sql')]"
 			]
 		},
