@@ -292,7 +292,7 @@
 				"typeProperties": {
 					"variableName": "RunSeqNo",
 					"value": {
-						"value": "@activity('lkup_runseqno').output.firstRow.RunSeqNo",
+						"value": "@string(activity('lkup_runseqno').output.firstRow.RunSeqNo)",
 						"type": "Expression"
 					}
 				}
