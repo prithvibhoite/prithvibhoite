@@ -353,7 +353,7 @@
 						"type": "Copy",
 						"dependsOn": [
 							{
-								"activity": "lkup_runseqno",
+								"activity": "set_runseqno_variable",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -378,7 +378,7 @@
 									{
 										"name": "RunSeqNo",
 										"value": {
-											"value": "@activity('lkup_RunSeqNo').output.firstRow.RunSeqNo",
+											"value": "@variables('RunSeqNo')",
 											"type": "Expression"
 										}
 									}
@@ -564,7 +564,7 @@
 								},
 								"RunSeqNo": {
 									"value": {
-										"value": "@activity('lkup_RunSeqNo').output.firstRow.RunSeqNo",
+										"value": "@variables('RunSeqNo')",
 										"type": "Expression"
 									},
 									"type": "Int32"
@@ -625,11 +625,37 @@
 								"parameters": {}
 							}
 						}
+					},
+					{
+						"name": "set_runseqno_variable",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "lkup_runseqno",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "RunSeqNo",
+							"value": {
+								"value": "@string(activity('lkup_runseqno').output.firstRow.RunSeqNo)",
+								"type": "Expression"
+							}
+						}
 					}
 				],
 				"policy": {
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
+				},
+				"variables": {
+					"RunSeqNo": {
+						"type": "String",
+						"defaultValue": "-1"
+					}
 				},
 				"folder": {
 					"name": "Chapter-04"
