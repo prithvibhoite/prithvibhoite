@@ -1,0 +1,50 @@
+{
+	"name": "pl_reusable_pipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "exe_pl_SweetTreats",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pl_importstformatfolder",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"WildcardFolderPath": "azure-data-factory-by-example-main/SampleData/SweetTreats"
+					}
+				}
+			},
+			{
+				"name": "exe_pl_Deserts4All",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "exe_pl_SweetTreats",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pl_importstformatfolder",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"WildcardFolderPath": "azure-data-factory-by-example-main/SampleData/Desserts4All"
+					}
+				}
+			}
+		],
+		"folder": {
+			"name": "Chapter-05"
+		},
+		"annotations": []
+	}
+}
