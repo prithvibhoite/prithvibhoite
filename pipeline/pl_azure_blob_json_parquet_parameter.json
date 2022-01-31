@@ -133,8 +133,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ds_azure_blob_json_01",
-						"type": "DatasetReference"
+						"referenceName": "ds_azure_blob_json_key_vault",
+						"type": "DatasetReference",
+						"parameters": {
+							"Container": "sampledata",
+							"Directory": ".",
+							"File": "."
+						}
 					}
 				],
 				"outputs": [
