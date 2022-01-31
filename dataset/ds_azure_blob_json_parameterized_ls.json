@@ -1,0 +1,55 @@
+{
+	"name": "ds_azure_blob_json_parameterized_ls",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_anyblobstorage",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"ConnectionSecret": {
+					"value": "@dataset().LinkedServiceConnectionSecret",
+					"type": "Expression"
+				}
+			}
+		},
+		"parameters": {
+			"Container": {
+				"type": "string"
+			},
+			"Directory": {
+				"type": "string",
+				"defaultValue": "."
+			},
+			"File": {
+				"type": "string",
+				"defaultValue": "."
+			},
+			"LinkedServiceConnectionSecret": {
+				"type": "string",
+				"defaultValue": "StorageAccountConnectionString"
+			}
+		},
+		"folder": {
+			"name": "Chapter-05"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().File",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().Directory",
+					"type": "Expression"
+				},
+				"container": {
+					"value": "@dataset().Container",
+					"type": "Expression"
+				}
+			}
+		},
+		"schema": {}
+	}
+}
