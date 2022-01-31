@@ -13,8 +13,8 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "*.csv",
-				"folderPath": "azure-data-factory-by-example-main/SampleData/SweetTreats",
+				"fileName": "Sales.csv",
+				"folderPath": "azure-data-factory-by-example-main/SampleData/SweetTreats/Apr-20",
 				"container": "sampledata"
 			},
 			"columnDelimiter": ",",
@@ -24,11 +24,11 @@
 		},
 		"schema": [
 			{
-				"name": "Retailer",
+				"name": "SalesMonth",
 				"type": "String"
 			},
 			{
-				"name": "SkuCode",
+				"name": "Retailer",
 				"type": "String"
 			},
 			{
@@ -36,11 +36,7 @@
 				"type": "String"
 			},
 			{
-				"name": "SalesMonth",
-				"type": "String"
-			},
-			{
-				"name": "SalesValue",
+				"name": "SalesValueUSD",
 				"type": "String"
 			},
 			{
