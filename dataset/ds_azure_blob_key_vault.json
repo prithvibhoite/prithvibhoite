@@ -1,0 +1,42 @@
+{
+	"name": "ds_azure_blob_key_vault",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_azure_blob_key_vault",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"Container": {
+				"type": "string"
+			},
+			"Directory": {
+				"type": "string",
+				"defaultValue": "."
+			},
+			"File": {
+				"type": "string",
+				"defaultValue": "."
+			}
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().File",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().Directory",
+					"type": "Expression"
+				},
+				"container": {
+					"value": "@dataset().Container",
+					"type": "Expression"
+				}
+			}
+		},
+		"schema": {}
+	}
+}
