@@ -13,7 +13,8 @@
 		},
 		"parameters": {
 			"Container": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "sampledata"
 			},
 			"Directory": {
 				"type": "string",
