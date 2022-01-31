@@ -15,6 +15,14 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'ls_azure_sql'"
 		},
+		"ls_azure_blob_key_vault_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "StorageAccountConnectionString"
+		},
+		"ls_key_vault_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://azkeyvaultpnk.vault.azure.net/"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -47,10 +55,36 @@
 					},
 					"ls_azure_sql_connectionString": {
 						"value": "[parameters('ls_azure_sql_connectionString')]"
+					},
+					"ls_key_vault_properties_typeProperties_baseUrl": {
+						"value": "[parameters('ls_key_vault_properties_typeProperties_baseUrl')]"
+					},
+					"ls_azure_blob_key_vault_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('ls_azure_blob_key_vault_properties_typeProperties_connectionString_secretName')]"
 					}
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "ADF-AMS-Synapse_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'ADF-AMS-Synapse_ArmTemplate_0')]"
+			]
 		}
 	]
 }

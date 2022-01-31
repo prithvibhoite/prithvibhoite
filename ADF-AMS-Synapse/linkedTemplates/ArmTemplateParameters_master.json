@@ -11,6 +11,12 @@
 		"ls_azure_sql_connectionString": {
 			"value": ""
 		},
+		"ls_azure_blob_key_vault_properties_typeProperties_connectionString_secretName": {
+			"value": "StorageAccountConnectionString"
+		},
+		"ls_key_vault_properties_typeProperties_baseUrl": {
+			"value": "https://azkeyvaultpnk.vault.azure.net/"
+		},
 		"containerUri": {
 			"value": ""
 		},
