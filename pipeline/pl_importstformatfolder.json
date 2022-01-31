@@ -103,11 +103,13 @@
 							},
 							{
 								"source": {
-									"name": "SalesValue",
+									"name": "SalesValueUSD",
+									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
 									"name": "SalesValueUSD",
+									"type": "Decimal",
 									"physicalType": "decimal",
 									"scale": 2,
 									"precision": 18
