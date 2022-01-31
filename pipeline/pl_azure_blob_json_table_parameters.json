@@ -133,6 +133,7 @@
 						"referenceName": "ds_azure_blob_json_key_vault",
 						"type": "DatasetReference",
 						"parameters": {
+							"Container": "sampledata",
 							"Directory": ".",
 							"File": "."
 						}
