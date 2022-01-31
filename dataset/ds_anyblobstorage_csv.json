@@ -1,0 +1,41 @@
+{
+	"name": "ds_anyblobstorage_csv",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_anyblobstorage",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"Container": {
+				"type": "string",
+				"defaultValue": "sampledata"
+			},
+			"Directory": {
+				"type": "string",
+				"defaultValue": "."
+			},
+			"File": {
+				"type": "string",
+				"defaultValue": "*.csv"
+			},
+			"LinkedServiceConnectionSecret": {
+				"type": "string",
+				"defaultValue": "StorageAccountConnectionString"
+			}
+		},
+		"folder": {
+			"name": "Chapter-05"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}

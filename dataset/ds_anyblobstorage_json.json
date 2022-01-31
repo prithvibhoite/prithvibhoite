@@ -1,5 +1,5 @@
 {
-	"name": "ds_azure_blob_json_parameterized_ls",
+	"name": "ds_anyblobstorage_json",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_anyblobstorage",
@@ -22,7 +22,7 @@
 			},
 			"File": {
 				"type": "string",
-				"defaultValue": "."
+				"defaultValue": "*.json"
 			},
 			"LinkedServiceConnectionSecret": {
 				"type": "string",

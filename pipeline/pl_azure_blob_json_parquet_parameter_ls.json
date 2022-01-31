@@ -33,8 +33,14 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "azure-data-factory-by-example-main/SampleData/HandyCandy",
-							"wildcardFileName": "*.json",
+							"wildcardFolderPath": {
+								"value": "@pipeline().parameters.WildCardFolderPath",
+								"type": "Expression"
+							},
+							"wildcardFileName": {
+								"value": "@pipeline().parameters.WildCardFileName",
+								"type": "Expression"
+							},
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
@@ -133,7 +139,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ds_azure_blob_json_parameterized_ls",
+						"referenceName": "ds_anyblobstorage_json",
 						"type": "DatasetReference",
 						"parameters": {
 							"Container": "sampledata",
@@ -151,6 +157,15 @@
 				]
 			}
 		],
+		"parameters": {
+			"WildCardFolderPath": {
+				"type": "string"
+			},
+			"WildCardFileName": {
+				"type": "string",
+				"defaultValue": "*.json"
+			}
+		},
 		"folder": {
 			"name": "Chapter-05"
 		},
