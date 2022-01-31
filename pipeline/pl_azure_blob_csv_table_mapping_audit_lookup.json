@@ -252,7 +252,7 @@
 							"Comments": {
 								"type": "String",
 								"value": {
-									"value": "@concat('Pipeline ',pipeline().Pipeline,' executed in',pipeline().DataFactory)",
+									"value": "@concat('Pipeline ',pipeline().Pipeline,' executed in ',pipeline().DataFactory)",
 									"type": "Expression"
 								}
 							},
