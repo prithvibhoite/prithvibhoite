@@ -1,5 +1,5 @@
 {
-	"name": "ds_azure_blob_key_vault",
+	"name": "ds_azure_blob_json_key_vault",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_azure_blob_key_vault",
