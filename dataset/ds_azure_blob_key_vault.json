@@ -18,6 +18,9 @@
 				"defaultValue": "."
 			}
 		},
+		"folder": {
+			"name": "Chapter-05"
+		},
 		"annotations": [],
 		"type": "Json",
 		"typeProperties": {
