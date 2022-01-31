@@ -11,6 +11,9 @@
 		"ls_azure_sql_connectionString": {
 			"value": ""
 		},
+		"ls_anyblobstorage_properties_typeProperties_connectionString_secretName": {
+			"value": "@linkedService().ConnectionSecret"
+		},
 		"ls_azure_blob_key_vault_properties_typeProperties_connectionString_secretName": {
 			"value": "StorageAccountConnectionString"
 		},
