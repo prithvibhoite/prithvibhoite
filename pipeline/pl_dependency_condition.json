@@ -1,0 +1,60 @@
+{
+	"name": "pl_dependency_condition",
+	"properties": {
+		"activities": [
+			{
+				"name": "set_variable_01",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "var_pipeline",
+					"value": "@string(int('not an int'))"
+				}
+			},
+			{
+				"name": "set_variable_02",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "set_variable_01",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "var_pipeline",
+					"value": "\"variable_02\""
+				}
+			},
+			{
+				"name": "set_variable_03",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "set_variable_02",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "var_pipeline",
+					"value": "\"variable_03\""
+				}
+			}
+		],
+		"variables": {
+			"var_pipeline": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "Chapter-06"
+		},
+		"annotations": []
+	}
+}
