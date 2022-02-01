@@ -1,0 +1,41 @@
+{
+	"name": "ds_azure_sql_error_log",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_azure_sql",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Chapter-06"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "Timestamp",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Level",
+				"type": "nvarchar"
+			},
+			{
+				"name": "OperationName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "OperationItem",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Message",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "LoadingError"
+		}
+	}
+}
