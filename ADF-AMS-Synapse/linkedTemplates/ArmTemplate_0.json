@@ -72,6 +72,22 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Chapter-06"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ds_azure_blob_csv')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -136,8 +152,8 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "2020-04.csv",
-						"folderPath": "azure-data-factory-by-example-main/SampleData/CandyShack",
+						"fileName": "Sales.csv",
+						"folderPath": "azure-data-factory-by-example-main/SampleData/SweetTreats/Apr-20",
 						"container": "sampledata"
 					},
 					"columnDelimiter": ",",
@@ -147,21 +163,23 @@
 				},
 				"schema": [
 					{
+						"name": "SalesMonth",
 						"type": "String"
 					},
 					{
+						"name": "Retailer",
 						"type": "String"
 					},
 					{
+						"name": "Product",
 						"type": "String"
 					},
 					{
+						"name": "SalesValueUSD",
 						"type": "String"
 					},
 					{
-						"type": "String"
-					},
-					{
+						"name": "UnitsSold",
 						"type": "String"
 					}
 				]
@@ -1535,56 +1553,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ds_azure_blob_zip')]",
 				"[concat(variables('factoryId'), '/datasets/ds_azure_blob_unzip')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_azure_blob_json_key_vault')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_azure_blob_key_vault",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"Container": {
-						"type": "string"
-					},
-					"Directory": {
-						"type": "string",
-						"defaultValue": "."
-					},
-					"File": {
-						"type": "string",
-						"defaultValue": "."
-					}
-				},
-				"folder": {
-					"name": "Chapter-05"
-				},
-				"annotations": [],
-				"type": "Json",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": {
-							"value": "@dataset().File",
-							"type": "Expression"
-						},
-						"folderPath": {
-							"value": "@dataset().Directory",
-							"type": "Expression"
-						},
-						"container": {
-							"value": "@dataset().Container",
-							"type": "Expression"
-						}
-					}
-				},
-				"schema": {}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_azure_blob_key_vault')]"
 			]
 		}
 	]
