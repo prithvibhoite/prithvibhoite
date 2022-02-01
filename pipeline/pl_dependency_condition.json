@@ -9,7 +9,10 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "var_pipeline",
-					"value": "@string(int('not an int'))"
+					"value": {
+						"value": "@string(int('not an int'))",
+						"type": "Expression"
+					}
 				}
 			},
 			{
@@ -17,9 +20,15 @@
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "set_variable_01",
+						"activity": "set_variable_04",
 						"dependencyConditions": [
 							"Succeeded"
+						]
+					},
+					{
+						"activity": "set_variable_01",
+						"dependencyConditions": [
+							"Completed"
 						]
 					}
 				],
@@ -36,6 +45,7 @@
 					{
 						"activity": "set_variable_02",
 						"dependencyConditions": [
+							"Skipped",
 							"Succeeded"
 						]
 					}
@@ -44,6 +54,16 @@
 				"typeProperties": {
 					"variableName": "var_pipeline",
 					"value": "\"variable_03\""
+				}
+			},
+			{
+				"name": "set_variable_04",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "var_pipeline",
+					"value": "\"variable_04\""
 				}
 			}
 		],
