@@ -33,6 +33,76 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/pl_dependency_condition')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "set_variable_01",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "var_pipeline",
+							"value": {
+								"value": "@string(int('not an int'))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "set_variable_02",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "set_variable_01",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "var_pipeline",
+							"value": "\"variable_02\""
+						}
+					},
+					{
+						"name": "set_variable_03",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "set_variable_02",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "var_pipeline",
+							"value": "\"variable_03\""
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"variables": {
+					"var_pipeline": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "Chapter-06"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ls_azure_blob_storage')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -68,22 +138,6 @@
 				"typeProperties": {
 					"baseUrl": "[parameters('ls_key_vault_properties_typeProperties_baseUrl')]"
 				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"folder": {
-					"name": "Chapter-06"
-				},
-				"annotations": []
 			},
 			"dependsOn": []
 		},
