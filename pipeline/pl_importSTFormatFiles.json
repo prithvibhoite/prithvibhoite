@@ -44,7 +44,7 @@
 				}
 			},
 			{
-				"name": "ForEach1",
+				"name": "Iterate files",
 				"type": "ForEach",
 				"dependsOn": [
 					{
@@ -60,9 +60,10 @@
 						"value": "@activity('get file list').output.childItems",
 						"type": "Expression"
 					},
+					"isSequential": false,
 					"activities": [
 						{
-							"name": "exe_pl_each_file",
+							"name": "execute_pl_each_file",
 							"type": "ExecutePipeline",
 							"dependsOn": [],
 							"userProperties": [],
