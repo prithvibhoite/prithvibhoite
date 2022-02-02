@@ -56,9 +56,15 @@
 						"type": "SetVariable",
 						"dependsOn": [
 							{
-								"activity": "set_variable_01",
+								"activity": "set_variable_04",
 								"dependencyConditions": [
 									"Succeeded"
+								]
+							},
+							{
+								"activity": "set_variable_01",
+								"dependencyConditions": [
+									"Completed"
 								]
 							}
 						],
@@ -75,6 +81,7 @@
 							{
 								"activity": "set_variable_02",
 								"dependencyConditions": [
+									"Skipped",
 									"Succeeded"
 								]
 							}
@@ -83,6 +90,16 @@
 						"typeProperties": {
 							"variableName": "var_pipeline",
 							"value": "\"variable_03\""
+						}
+					},
+					{
+						"name": "set_variable_04",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "var_pipeline",
+							"value": "\"variable_04\""
 						}
 					}
 				],
@@ -501,6 +518,52 @@
 				"typeProperties": {
 					"schema": "dbo",
 					"table": "Sales_LOAD"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_azure_sql')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_azure_sql_error_log')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_azure_sql",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Chapter-06"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "Timestamp",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Level",
+						"type": "nvarchar"
+					},
+					{
+						"name": "OperationName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "OperationItem",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Message",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "LoadingError"
 				}
 			},
 			"dependsOn": [
@@ -1536,77 +1599,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ds_azure_blob_json')]",
 				"[concat(variables('factoryId'), '/datasets/ds_azure_sql')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pl_azure_blob_unzip')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "cp_azure_blob_unzip",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "BinarySource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true
-								},
-								"formatSettings": {
-									"type": "BinaryReadSettings",
-									"compressionProperties": {
-										"type": "ZipDeflateReadSettings",
-										"preserveZipFileNameAsFolder": false
-									}
-								}
-							},
-							"sink": {
-								"type": "BinarySink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "ds_azure_blob_zip",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "ds_azure_blob_unzip",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"folder": {
-					"name": "Chapter-02"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_azure_blob_zip')]",
-				"[concat(variables('factoryId'), '/datasets/ds_azure_blob_unzip')]"
 			]
 		}
 	]
