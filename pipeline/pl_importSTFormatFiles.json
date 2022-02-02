@@ -1,0 +1,57 @@
+{
+	"name": "pl_importSTFormatFiles",
+	"properties": {
+		"activities": [
+			{
+				"name": "get file list",
+				"type": "GetMetadata",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "ds_anyblobstorage_csv",
+						"type": "DatasetReference",
+						"parameters": {
+							"Container": "sampledata",
+							"Directory": {
+								"value": "@pipeline().parameters.FolderPath",
+								"type": "Expression"
+							},
+							"File": " ",
+							"LinkedServiceConnectionSecret": "StorageAccountConnectionString"
+						}
+					},
+					"fieldList": [
+						"exists",
+						"itemType",
+						"itemName"
+					],
+					"storeSettings": {
+						"type": "AzureBlobStorageReadSettings",
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "DelimitedTextReadSettings"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"FolderPath": {
+				"type": "string",
+				"defaultValue": "azure-data-factory-by-example-main/SampleData/NaughtyButNice"
+			}
+		},
+		"folder": {
+			"name": "Chapter-06"
+		},
+		"annotations": []
+	}
+}
