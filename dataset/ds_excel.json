@@ -5,6 +5,9 @@
 			"referenceName": "ls_azure_blob_storage",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "Chapter-07"
+		},
 		"annotations": [],
 		"type": "Excel",
 		"typeProperties": {
