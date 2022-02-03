@@ -8,16 +8,33 @@
 		"typeProperties": {
 			"sources": [
 				{
-					"dataset": {
-						"referenceName": "ds_excel",
-						"type": "DatasetReference"
+					"linkedService": {
+						"referenceName": "ls_azure_blob_storage",
+						"type": "LinkedServiceReference"
 					},
-					"name": "source"
+					"name": "Source"
+				},
+				{
+					"linkedService": {
+						"referenceName": "ls_azure_blob_storage",
+						"type": "LinkedServiceReference"
+					},
+					"name": "ExchangeRates"
 				}
 			],
 			"sinks": [],
-			"transformations": [],
-			"script": "source(output(\n\t\tPeriod as date,\n\t\tProduct as string,\n\t\t{Unit Price} as double,\n\t\tCurrency as string,\n\t\t{Units Sold} as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source"
+			"transformations": [
+				{
+					"name": "ExcludeMonthlyTotal"
+				},
+				{
+					"name": "RatesToUSD"
+				},
+				{
+					"name": "ConvertToUSD"
+				}
+			],
+			"script": "source(output(\n\t\tPeriod as date,\n\t\tProduct as string,\n\t\t{Unit Price} as double,\n\t\tCurrency as string,\n\t\t{Units Sold} as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tformat: 'excel',\n\tcontainer: 'sampledata',\n\tfolderPath: 'azure-data-factory-by-example-main/SampleData/JollyGood',\n\tfileName: 'Sales Apr-Sep 2020.xlsx',\n\tsheetName: 'SALES',\n\tfirstRowAsHeader: true) ~> Source\nsource(output(\n\t\tFromCurrency as string,\n\t\tToCurrency as string,\n\t\tDate as date,\n\t\tExchangeRate as double\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tformat: 'excel',\n\tcontainer: 'sampledata',\n\tfolderPath: 'azure-data-factory-by-example-main/SampleData',\n\tfileName: 'ExchangeRates.xlsx',\n\tsheetName: 'Sheet1',\n\tfirstRowAsHeader: true) ~> ExchangeRates\nSource filter(Product != 'Month Total') ~> ExcludeMonthlyTotal\nExchangeRates filter(ToCurrency == 'USD') ~> RatesToUSD\nExcludeMonthlyTotal, RatesToUSD lookup(Currency == FromCurrency\n\t&& Period == Date,\n\tmultiple: false,\n\tpickup: 'any',\n\tbroadcast: 'auto')~> ConvertToUSD"
 		}
 	}
 }
