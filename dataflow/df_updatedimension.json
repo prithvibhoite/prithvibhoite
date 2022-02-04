@@ -15,7 +15,11 @@
 					"name": "source"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"name": "sink1"
+				}
+			],
 			"transformations": [
 				{
 					"name": "SeparateProductWeight"
@@ -24,7 +28,7 @@
 					"name": "RemoveDuplicate"
 				}
 			],
-			"script": "source(output(\n\t\tRowId as integer,\n\t\tRetailer as string,\n\t\tSalesMonth as date,\n\t\tProduct as string,\n\t\tSalesValueUSD as decimal(19,2),\n\t\tUnitsSold as integer,\n\t\tRunSeqNo as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> source\nsource derive(ProductName = trim(left(Product,length(Product) - length(:WeightString))),\n\t\tWeightInOunces = toFloat(replace(:WeightString, :WeightUnit, '')) / iif(:WeightUnit=='g', 28.3495, 1.0),\n\t\tWeightInGrams = toFloat(replace(:WeightString, :WeightUnit, '')) / iif(:WeightUnit=='oz', 0.035274, 1.0),\n\t\tWeightString := right(Product,locate(' ', reverse(Product))-1),\n\t\tWeightUnit := iif(endsWith(Product, 'oz'), 'oz', 'g')) ~> SeparateProductWeight\nSeparateProductWeight aggregate(groupBy(Product),\n\tProductName = first(ProductName),\n\t\teach(match(startsWith(name,'Weight')), $$ = first($$))) ~> RemoveDuplicate"
+			"script": "source(output(\n\t\tRowId as integer,\n\t\tRetailer as string,\n\t\tSalesMonth as date,\n\t\tProduct as string,\n\t\tSalesValueUSD as decimal(19,2),\n\t\tUnitsSold as integer,\n\t\tRunSeqNo as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> source\nsource derive(ProductName = trim(left(Product,length(Product) - length(:WeightString))),\n\t\tWeightInOunces = toFloat(replace(:WeightString, :WeightUnit, '')) / iif(:WeightUnit=='g', 28.3495, 1.0),\n\t\tWeightInGrams = toFloat(replace(:WeightString, :WeightUnit, '')) / iif(:WeightUnit=='oz', 0.035274, 1.0),\n\t\tWeightString := right(Product,locate(' ', reverse(Product))-1),\n\t\tWeightUnit := iif(endsWith(Product, 'oz'), 'oz', 'g')) ~> SeparateProductWeight\nSeparateProductWeight aggregate(groupBy(Product),\n\tProductName = first(ProductName),\n\t\teach(match(startsWith(name,'Weight')), $$ = first($$))) ~> RemoveDuplicate\nRemoveDuplicate sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
 		}
 	}
 }
